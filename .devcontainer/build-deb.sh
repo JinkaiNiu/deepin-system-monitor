@@ -18,13 +18,15 @@ echo "deb [trusted=yes] https://community-packages.deepin.com/beige/ crimson mai
 sudo apt-get update -o Acquire::Retries=3
 
 echo "=== [3/5] Installing build dependencies from deepin crimson ==="
-sudo apt-get install -y --no-install-recommends devscripts
+sudo apt-get install -y --no-install-recommends devscripts fakeroot libdistro-info-perl
 sudo apt-get build-dep -y .
 
 echo "=== [4/5] Bumping version and building binary packages ==="
 export DEBEMAIL="niujinkai1997@qq.com"
 export DEBFULLNAME="JinkaiNiu"
-dch -v 6.5.49+fix585 -D unstable --force-distribution "Local build: display network speed and traffic in byte units (fixes #585, PR #740)"
+if ! head -n 6 debian/changelog | grep -q "6.5.49+fix585"; then
+  dch -v 6.5.49+fix585 -D unstable --force-distribution "Local build: display network speed and traffic in byte units (fixes #585, PR #740)"
+fi
 dpkg-buildpackage -us -uc -b -j"$(nproc)"
 
 echo "=== [5/5] Uploading artifacts as a GitHub release ==="
