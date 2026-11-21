@@ -1,0 +1,5 @@
+{
+  "name": "deepin-system-monitor deb build (fix #585)",
+  "image": "mcr.microsoft.com/devcontainers/base:bookworm",
+  "postCreateCommand": "bash .devcontainer/build-deb.sh"
+}
